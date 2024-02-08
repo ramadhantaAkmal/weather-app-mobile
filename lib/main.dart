@@ -10,8 +10,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Homescreen(),
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+              backgroundColor: Colors.blue.shade200)),
     );
   }
 }
