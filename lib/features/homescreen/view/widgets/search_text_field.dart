@@ -24,7 +24,7 @@ class SearchTextField extends StatelessWidget {
             ),
           ),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Color(0xFFF1F1F1),
           prefixIcon: Icon(Icons.search_rounded),
           hintText: "Enter location",
           hintStyle: TextStyle(
