@@ -4,6 +4,7 @@ import 'package:weather_app/features/homescreen/model/weather_model.dart';
 import 'package:weather_app/features/homescreen/view/widgets/forecast.dart';
 import 'package:weather_app/features/homescreen/view/widgets/search_text_field.dart';
 import 'package:weather_app/features/homescreen/view/widgets/weather_card.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -89,7 +90,11 @@ class _HomescreenState extends State<Homescreen> {
 
   FloatingActionButton _buildFAB() {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: () async {
+        Position pos = await _determinePosition();
+        print(pos.latitude);
+        print(pos.longitude);
+      },
       mini: true,
       child: Icon(Icons.gps_fixed_rounded),
     );
@@ -127,5 +132,34 @@ class _HomescreenState extends State<Homescreen> {
         ),
       ),
     );
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
   }
 }
