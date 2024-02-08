@@ -4,7 +4,7 @@ class WeatherModel {
   final Condition? condition;
   final double? windKph;
   final String? windDir;
-  final double? humidity;
+  final int? humidity;
   final String? sunriseTime;
   final String? sunsetTime;
 
@@ -23,7 +23,7 @@ class WeatherModel {
           Map<String, dynamic> astronomyJson) =>
       WeatherModel(
         location: Location(
-          cityName: weatherJson["location"]["city_name"],
+          cityName: weatherJson["location"]["name"],
           region: weatherJson["location"]["region"],
           country: weatherJson["location"]["country"],
           lat: weatherJson["location"]["lat"],

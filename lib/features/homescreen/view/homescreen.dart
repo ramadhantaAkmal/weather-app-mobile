@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/features/homescreen/data/remote/weather_service.dart';
 import 'package:weather_app/features/homescreen/model/forecast_model.dart';
 import 'package:weather_app/features/homescreen/model/weather_model.dart';
 import 'package:weather_app/features/homescreen/view/widgets/forecast.dart';
@@ -14,6 +15,7 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
+  WeatherService weatherService = WeatherService();
   static const WeatherModel dummyWeather = WeatherModel(
     location: Location(cityName: "Jakarta", localtime: "2024-02-08 15:11"),
     condition: Condition(
@@ -92,8 +94,9 @@ class _HomescreenState extends State<Homescreen> {
     return FloatingActionButton(
       onPressed: () async {
         Position pos = await _determinePosition();
-        print(pos.latitude);
-        print(pos.longitude);
+        var res =
+            await weatherService.getWeatherCurrent(pos.latitude, pos.longitude);
+        print(res.data!.location!.cityName);
       },
       mini: true,
       child: Icon(Icons.gps_fixed_rounded),
