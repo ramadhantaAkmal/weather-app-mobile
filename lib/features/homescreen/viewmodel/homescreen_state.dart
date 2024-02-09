@@ -17,8 +17,8 @@ class HomescreenLoad extends HomescreenState {
 class HomescreenSuccess extends HomescreenState {
   const HomescreenSuccess({
     WeatherModel? weather,
-    // List<ForecastModel>? forecast,
-  }) : super(weather: weather);
+    List<ForecastModel>? forecast,
+  }) : super(weather: weather, forecast: forecast);
 }
 
 class HomescreenError extends HomescreenState {

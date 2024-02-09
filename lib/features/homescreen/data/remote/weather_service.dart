@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:weather_app/core/resources/data_state.dart';
+import 'package:weather_app/features/homescreen/model/forecast_model.dart';
 import 'package:weather_app/features/homescreen/model/weather_model.dart';
 
 class WeatherService {
@@ -13,7 +14,6 @@ class WeatherService {
         "http://api.weatherapi.com/v1/current.json?key=4da0a9eafe47413289b103758240602&q=${lat},${lon}";
     String timeUrl =
         "http://api.weatherapi.com/v1/astronomy.json?key=4da0a9eafe47413289b103758240602&q=${lat},${lon}";
-    var data;
     try {
       final responseWeatherData = await dio.get(
         currWeatherUrl,
@@ -25,7 +25,7 @@ class WeatherService {
 
       if (responseTimeData.statusCode == HttpStatus.ok &&
           responseWeatherData.statusCode == HttpStatus.ok) {
-        data = WeatherModel.fromJson(
+        var data = WeatherModel.fromJson(
             responseWeatherData.data, responseTimeData.data);
 
         return DataSuccess(data);
@@ -36,6 +36,33 @@ class WeatherService {
           response: responseTimeData,
           type: DioExceptionType.badResponse,
           requestOptions: responseTimeData.requestOptions,
+        ));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  Future<DataState<List<ForecastModel>>> getForecast(
+      double lat, double lon) async {
+    String forecastUrl =
+        "http://api.weatherapi.com/v1/forecast.json?key=4da0a9eafe47413289b103758240602&q=${lat},${lon}&days=7";
+
+    try {
+      final response = await dio.get(
+        forecastUrl,
+      );
+
+      if (response.statusCode == HttpStatus.ok) {
+        var rawData = response.data["forecast"]["forecastday"] as List;
+        var data = rawData.map((e) => ForecastModel.fromJson(e)).toList();
+        return DataSuccess(data);
+      } else {
+        return DataFailed(DioException(
+          error: response.statusMessage,
+          response: response,
+          type: DioExceptionType.badResponse,
+          requestOptions: response.requestOptions,
         ));
       }
     } on DioException catch (e) {

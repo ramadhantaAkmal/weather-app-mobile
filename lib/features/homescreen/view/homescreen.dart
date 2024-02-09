@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/features/homescreen/data/remote/weather_service.dart';
-import 'package:weather_app/features/homescreen/model/forecast_model.dart';
 import 'package:weather_app/features/homescreen/view/widgets/forecast.dart';
 import 'package:weather_app/features/homescreen/view/widgets/forecast_shimmer.dart';
 import 'package:weather_app/features/homescreen/view/widgets/search_text_field.dart';
@@ -29,58 +28,6 @@ class _HomescreenState extends State<Homescreen> {
     super.initState();
   }
 
-  static const List<ForecastModel> dummyForecast = [
-    ForecastModel(
-      condition: "Sunny",
-      date: "2024-02-08",
-      maxTempC: 33.6,
-      minTempC: 25.7,
-      iconUrl: "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-    ),
-    ForecastModel(
-      condition: "Sunny",
-      date: "2024-02-08",
-      maxTempC: 33.6,
-      minTempC: 25.7,
-      iconUrl: "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-    ),
-    ForecastModel(
-      condition: "Sunny",
-      date: "2024-02-08",
-      maxTempC: 33.6,
-      minTempC: 25.7,
-      iconUrl: "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-    ),
-    ForecastModel(
-      condition: "Sunny",
-      date: "2024-02-08",
-      maxTempC: 33.6,
-      minTempC: 25.7,
-      iconUrl: "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-    ),
-    ForecastModel(
-      condition: "Sunny",
-      date: "2024-02-08",
-      maxTempC: 33.6,
-      minTempC: 25.7,
-      iconUrl: "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-    ),
-    ForecastModel(
-      condition: "Sunny",
-      date: "2024-02-08",
-      maxTempC: 33.6,
-      minTempC: 25.7,
-      iconUrl: "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-    ),
-    ForecastModel(
-      condition: "Sunny",
-      date: "2024-02-08",
-      maxTempC: 33.6,
-      minTempC: 25.7,
-      iconUrl: "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,8 +38,8 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   void _getWeatherForecast() {
+    BlocProvider.of<HomescreenBloc>(context).add(const Dispose());
     _determinePosition().then((pos) {
-      BlocProvider.of<HomescreenBloc>(context).add(const Dispose());
       BlocProvider.of<HomescreenBloc>(context)
           .add(GetWeatherForecast(pos.latitude, pos.longitude));
     });
@@ -112,7 +59,9 @@ class _HomescreenState extends State<Homescreen> {
     return Padding(
       padding: EdgeInsets.only(top: 25),
       child: RefreshIndicator(
-        onRefresh: () async {},
+        onRefresh: () async {
+          _getWeatherForecast();
+        },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -170,7 +119,7 @@ class _HomescreenState extends State<Homescreen> {
                           WeatherCard(weather: state.weather!),
 
                           //weather forecast
-                          ForecastWidget(forecast: dummyForecast),
+                          ForecastWidget(forecast: state.forecast!),
                         ],
                       );
                     }

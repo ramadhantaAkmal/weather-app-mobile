@@ -39,12 +39,14 @@ class WeatherCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text(
-                          weather.condition?.conditionName ?? "null",
-                          style: TextStyle(fontSize: 20),
+                        Flexible(
+                          child: Text(
+                            weather.condition?.conditionName ?? "null",
+                            style: TextStyle(fontSize: 20),
+                            maxLines: 2,
+                          ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                        Flexible(
                           child: Image.network(
                               height: 47,
                               "https:${weather.condition?.iconUrl ?? "//cdn.weatherapi.com/weather/64x64/day/116.png"}"),

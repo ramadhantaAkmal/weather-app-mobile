@@ -11,16 +11,19 @@ class HomescreenBloc extends Bloc<HomescreenEvent, HomescreenState> {
 
   HomescreenBloc() : super(const HomescreenLoad()) {
     on<GetWeatherForecast>((event, emit) async {
-      final dataState =
+      final weatherState =
           await _weatherService.getWeatherCurrent(event.lat, event.lon);
+      final forecastState =
+          await _weatherService.getForecast(event.lat, event.lon);
 
-      if (dataState is DataSuccess) {
-        emit(
-            HomescreenSuccess(weather: dataState.data ?? const WeatherModel()));
+      if (weatherState is DataSuccess) {
+        emit(HomescreenSuccess(
+            weather: weatherState.data ?? const WeatherModel(),
+            forecast: forecastState.data ?? []));
       }
 
-      if (dataState is DataFailed) {
-        emit(HomescreenError(error: dataState.error!));
+      if (weatherState is DataFailed) {
+        emit(HomescreenError(error: weatherState.error!));
       }
     });
     on<Dispose>((event, emit) {

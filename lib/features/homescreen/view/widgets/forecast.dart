@@ -41,8 +41,8 @@ class ForecastWidget extends StatelessWidget {
                           Flexible(
                             flex: 2,
                             child: SizedBox(
-                              child: Image.network(forecast[i].iconUrl ??
-                                  "https://cdn.weatherapi.com/weather/64x64/day/116.png"),
+                              child: Image.network(
+                                  "https:${forecast[i].iconUrl ?? "//cdn.weatherapi.com/weather/64x64/day/116.png"}"),
                             ),
                           ),
                           Expanded(
