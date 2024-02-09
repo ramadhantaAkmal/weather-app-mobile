@@ -1,9 +1,12 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:weather_app/core/resources/data_state.dart';
 import 'package:weather_app/features/homescreen/model/forecast_model.dart';
 import 'package:weather_app/features/homescreen/model/weather_model.dart';
+
+import '../../model/search_model.dart';
 
 class WeatherService {
   final dio = Dio();
@@ -67,6 +70,29 @@ class WeatherService {
       }
     } on DioException catch (e) {
       return DataFailed(e);
+    }
+  }
+
+  Future<List<SearchModel>> searchCity(String query) async {
+    String searchUrl =
+        "http://api.weatherapi.com/v1/search.json?key=4da0a9eafe47413289b103758240602&q=${query}";
+
+    try {
+      final response = await dio.get(
+        searchUrl,
+      );
+
+      if (response.statusCode == HttpStatus.ok) {
+        var rawData = response.data as List;
+        var data = rawData.map((e) => SearchModel.fromJson(e)).toList();
+        return data;
+      } else {
+        log(response.statusMessage.toString());
+        return [];
+      }
+    } on DioException catch (e) {
+      log(e.toString());
+      return [];
     }
   }
 }
