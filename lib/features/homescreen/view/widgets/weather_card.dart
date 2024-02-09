@@ -47,8 +47,7 @@ class WeatherCard extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 20),
                           child: Image.network(
                               height: 47,
-                              weather.condition?.iconUrl ??
-                                  "https://cdn.weatherapi.com/weather/64x64/day/116.png"),
+                              "https:${weather.condition?.iconUrl ?? "//cdn.weatherapi.com/weather/64x64/day/116.png"}"),
                         ),
                       ],
                     ),

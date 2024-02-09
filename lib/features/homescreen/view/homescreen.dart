@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/features/homescreen/data/remote/weather_service.dart';
 import 'package:weather_app/features/homescreen/model/forecast_model.dart';
-import 'package:weather_app/features/homescreen/model/weather_model.dart';
 import 'package:weather_app/features/homescreen/view/widgets/forecast.dart';
+import 'package:weather_app/features/homescreen/view/widgets/forecast_shimmer.dart';
 import 'package:weather_app/features/homescreen/view/widgets/search_text_field.dart';
 import 'package:weather_app/features/homescreen/view/widgets/weather_card.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/features/homescreen/view/widgets/weather_card_shimmer.dart';
+import 'package:weather_app/features/homescreen/viewmodel/homescreen_bloc.dart';
+import 'package:weather_app/features/homescreen/viewmodel/homescreen_event.dart';
+
+import '../viewmodel/homescreen_state.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -16,18 +22,12 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   WeatherService weatherService = WeatherService();
-  static const WeatherModel dummyWeather = WeatherModel(
-    location: Location(cityName: "Jakarta", localtime: "2024-02-08 15:11"),
-    condition: Condition(
-        conditionName: "Partly cloudy",
-        iconUrl: "https://cdn.weatherapi.com/weather/64x64/day/116.png"),
-    humidity: 71,
-    sunriseTime: "05:57 AM",
-    sunsetTime: "06:17 PM",
-    tempC: 31.0,
-    windDir: "NW",
-    windKph: 20.2,
-  );
+
+  @override
+  void initState() {
+    _getWeatherForecast();
+    super.initState();
+  }
 
   static const List<ForecastModel> dummyForecast = [
     ForecastModel(
@@ -90,16 +90,21 @@ class _HomescreenState extends State<Homescreen> {
     );
   }
 
+  void _getWeatherForecast() {
+    _determinePosition().then((pos) {
+      BlocProvider.of<HomescreenBloc>(context).add(const Dispose());
+      BlocProvider.of<HomescreenBloc>(context)
+          .add(GetWeatherForecast(pos.latitude, pos.longitude));
+    });
+  }
+
   FloatingActionButton _buildFAB() {
     return FloatingActionButton(
-      onPressed: () async {
-        Position pos = await _determinePosition();
-        var res =
-            await weatherService.getWeatherCurrent(pos.latitude, pos.longitude);
-        print(res.data!.location!.cityName);
+      onPressed: () {
+        _getWeatherForecast();
       },
       mini: true,
-      child: Icon(Icons.gps_fixed_rounded),
+      child: const Icon(Icons.gps_fixed_rounded),
     );
   }
 
@@ -120,14 +125,57 @@ class _HomescreenState extends State<Homescreen> {
               child: SizedBox(
                 height: MediaQuery.sizeOf(context).height,
                 width: MediaQuery.sizeOf(context).width,
-                child: const Column(
-                  children: [
-                    //weather card
-                    WeatherCard(weather: dummyWeather),
+                child: BlocBuilder<HomescreenBloc, HomescreenState>(
+                  builder: (context, state) {
+                    if (state is HomescreenLoad) {
+                      return const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //weather card
+                          WeatherCardShimmer(),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Text(
+                              "7-Day Forecast",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 15),
+                            ),
+                          ),
+                          ForecastShimmer(),
+                        ],
+                      );
+                    }
 
-                    //weather forecast
-                    ForecastWidget(forecast: dummyForecast),
-                  ],
+                    if (state is HomescreenError) {
+                      return const Column(
+                        children: [
+                          //weather card
+                          Center(
+                            child: Icon(Icons.warning),
+                          ),
+
+                          //weather forecast
+                          Center(
+                            child: Icon(Icons.warning),
+                          ),
+                        ],
+                      );
+                    }
+
+                    if (state is HomescreenSuccess) {
+                      return Column(
+                        children: [
+                          //weather card
+                          WeatherCard(weather: state.weather!),
+
+                          //weather forecast
+                          ForecastWidget(forecast: dummyForecast),
+                        ],
+                      );
+                    }
+                    return SizedBox();
+                  },
                 ),
               ),
             )
