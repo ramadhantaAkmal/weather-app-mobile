@@ -10,7 +10,7 @@ class WeatherCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
         child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       width: MediaQuery.sizeOf(context).width,
       child: Card(
         shape: RoundedRectangleBorder(
@@ -21,7 +21,7 @@ class WeatherCard extends StatelessWidget {
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/images/weather-card.jpg"),
                   fit: BoxFit.fill)),
@@ -35,14 +35,14 @@ class WeatherCard extends StatelessWidget {
                   children: [
                     Text(
                       weather.location?.cityName ?? "null",
-                      style: TextStyle(fontSize: 32),
+                      style: const TextStyle(fontSize: 32),
                     ),
                     Row(
                       children: [
                         Flexible(
                           child: Text(
                             weather.condition?.conditionName ?? "null",
-                            style: TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 20),
                             maxLines: 2,
                           ),
                         ),
@@ -56,71 +56,71 @@ class WeatherCard extends StatelessWidget {
                     Text(
                       "${weather.tempC}°C",
                       style:
-                          TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                          const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
-                        Text(
+                        const Text(
                           "Sunrise",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         Text(
                           weather.sunriseTime ?? "00.00",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 17),
                         )
                       ],
                     ),
                     Column(
                       children: [
-                        Text(
+                        const Text(
                           "Wind",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         Text(
                           "${weather.windKph} K/h",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 17),
                         )
                       ],
                     ),
                     Column(
                       children: [
-                        Text(
+                        const Text(
                           "Sunset",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                         Text(
                           weather.sunsetTime ?? "00.00",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 17),
                         )
                       ],
                     ),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Flexible(
+                    const Flexible(
                         flex: 4,
                         child: Text(
                           "Humidity",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         )),
-                    Spacer(),
+                    const Spacer(),
                     Flexible(
                         flex: 4,
                         child: Text(
                           "${weather.humidity}%",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         )),
                   ],
                 ),

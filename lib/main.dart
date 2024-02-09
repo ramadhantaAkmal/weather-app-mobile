@@ -16,7 +16,7 @@ class MainApp extends StatelessWidget {
       create: (context) => HomescreenBloc(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Homescreen(),
+        home: const Homescreen(),
         theme: ThemeData(
             primarySwatch: Colors.blue,
             floatingActionButtonTheme: FloatingActionButtonThemeData(

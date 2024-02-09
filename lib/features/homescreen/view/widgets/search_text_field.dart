@@ -25,12 +25,6 @@ class _SearchTextFieldState extends State<SearchTextField> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    // searchController.addListener(() {});
-  }
-
   Future<List<SearchModel>> _searchCity() async {
     return await weatherService.searchCity(searchController.text);
   }
@@ -39,7 +33,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
   Widget build(BuildContext context) {
     return Flexible(
         child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextFieldSearch(
         controller: searchController,
         future: _searchCity,

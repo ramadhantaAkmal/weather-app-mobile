@@ -11,21 +11,21 @@ class ForecastWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         width: MediaQuery.sizeOf(context).width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "7-Day Forecast",
               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Expanded(
               child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: forecast.length,
                   itemBuilder: (context, i) {
                     DateTime parsedDate =
@@ -34,7 +34,7 @@ class ForecastWidget extends StatelessWidget {
                     String formattedDate =
                         DateFormat("dd MMMM yyyy").format(parsedDate);
                     return Padding(
-                      padding: EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(5.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -52,14 +52,14 @@ class ForecastWidget extends StatelessWidget {
                               children: [
                                 Text(
                                   forecast[i].condition ?? "null",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 17,
                                   ),
                                 ),
                                 Text(
                                   formattedDate,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12,
                                     color: Colors.grey,

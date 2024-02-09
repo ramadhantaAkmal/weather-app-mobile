@@ -57,7 +57,7 @@ class _HomescreenState extends State<Homescreen> {
 
   Widget _buildBody(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 25),
+      padding: const EdgeInsets.only(top: 25),
       child: RefreshIndicator(
         onRefresh: () async {
           _getWeatherForecast();
@@ -123,7 +123,7 @@ class _HomescreenState extends State<Homescreen> {
                         ],
                       );
                     }
-                    return SizedBox();
+                    return const SizedBox();
                   },
                 ),
               ),

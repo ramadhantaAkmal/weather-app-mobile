@@ -26,8 +26,8 @@ class ForecastShimmer extends StatelessWidget {
                           height: 40,
                           width: 40,
                           child: Shimmer.fromColors(
-                            baseColor: Color(0XFF87888A),
-                            highlightColor: Color(0XFFB9C0C5),
+                            baseColor: const Color(0XFF87888A),
+                            highlightColor: const Color(0XFFB9C0C5),
                             child: Container(
                               color: Colors.grey,
                             ),
@@ -42,8 +42,8 @@ class ForecastShimmer extends StatelessWidget {
                           height: 30,
                           width: 250,
                           child: Shimmer.fromColors(
-                            baseColor: Color(0XFF87888A),
-                            highlightColor: Color(0XFFB9C0C5),
+                            baseColor: const Color(0XFF87888A),
+                            highlightColor: const Color(0XFFB9C0C5),
                             child: Container(
                               color: Colors.grey,
                             ),
@@ -57,8 +57,8 @@ class ForecastShimmer extends StatelessWidget {
                           height: 30,
                           width: 50,
                           child: Shimmer.fromColors(
-                            baseColor: Color(0XFF87888A),
-                            highlightColor: Color(0XFFB9C0C5),
+                            baseColor: const Color(0XFF87888A),
+                            highlightColor: const Color(0XFFB9C0C5),
                             child: Container(
                               color: Colors.grey,
                             ),
